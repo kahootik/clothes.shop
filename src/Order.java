@@ -1,5 +1,4 @@
 public class Order {
-    // Fields
     private int orderId;
     private String customerName;
     private double totalAmount;
@@ -7,18 +6,15 @@ public class Order {
 
     // Constructor with 4 parameters
     public Order(int orderId, String customerName, double totalAmount, String status) {
-        this.orderId = orderId;
-        this.customerName = customerName;
-        this.totalAmount = totalAmount;
-        this.status = status;
+        setOrderId(orderId);
+        setCustomerName(customerName);
+        setTotalAmount(totalAmount);
+        setStatus(status);
     }
 
     // Default constructor
     public Order() {
-        this.orderId = 0;
-        this.customerName = "Unknown";
-        this.totalAmount = 0.0;
-        this.status = "Pending";
+
     }
 
     // Getters
@@ -38,39 +34,63 @@ public class Order {
         return status;
     }
 
-    // Setters
+    // Setters with validation
     public void setOrderId(int orderId) {
-        this.orderId = orderId;
+        if (orderId > 0) {
+            this.orderId = orderId;
+        } else {
+            System.out.println("Error: Order ID must be positive.");
+            this.orderId = 0;
+        }
     }
 
     public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+        if (customerName != null && !customerName.trim().isEmpty()) {
+            this.customerName = customerName.trim();
+        } else {
+            System.out.println("Error: Customer name cannot be empty.");
+            this.customerName = "Unknown";
+        }
     }
 
     public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
+        if (totalAmount >= 0) {
+            this.totalAmount = totalAmount;
+        } else {
+            System.out.println("Error: Total amount cannot be negative.");
+            this.totalAmount = 0.0;
+        }
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        String[] validStatuses = {"Pending", "Processing", "Completed", "Cancelled"};
+        if (status != null) {
+            for (String validStatus : validStatuses) {
+                if (validStatus.equalsIgnoreCase(status.trim())) {
+                    this.status = validStatus;
+                    return;
+                }
+            }
+            System.out.println("Error: Invalid status. Setting to 'Pending'.");
+        }
+        this.status = "Pending";
     }
 
     // Methods
     public void completeOrder() {
-        status = "Completed";
+        this.status = "Completed";
     }
 
     public boolean isPending() {
         return status.equals("Pending");
     }
 
-    public void addAmount(double amount) {
-        totalAmount = totalAmount + amount;
-    }
-
     @Override
     public String toString() {
         return "Order{orderId=" + orderId + ", customerName='" + customerName +
                 "', totalAmount=" + totalAmount + ", status='" + status + "'}";
+    }
+
+    public void addAmount(double v) {
     }
 }

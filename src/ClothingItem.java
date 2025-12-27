@@ -8,7 +8,7 @@ public class ClothingItem {
     // Constructor with 4 parameters
     public ClothingItem(String name, double price, String category, boolean inStock) {
         this.name = name;
-        this.price = price;
+        setPrice(price);
         this.category = category;
         this.inStock = inStock;
     }
@@ -44,9 +44,13 @@ public class ClothingItem {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        if (price >= 0) {
+            this.price = price;
+        } else {
+            System.out.println("Warning: Price cannot be negative! Setting to 0.");
+            this.price = 0;
+        }
     }
-
     public void setCategory(String category) {
         this.category = category;
     }
@@ -57,9 +61,12 @@ public class ClothingItem {
 
     // Methods
     public void applyDiscount(double percentage) {
-        price = price * (1 - percentage/100);
+        if (percentage > 0 && percentage <= 100) {
+            this.price = this.price * (1 - percentage / 100);
+        } else {
+            System.out.println("Invalid discount!");
+        }
     }
-
     public boolean isPremium() {
         return price > 10000;
     }

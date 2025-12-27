@@ -1,114 +1,138 @@
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
+
+    // Step 1: ArrayLists and Scanner
+    private static ArrayList<MenuItem> menuItems = new ArrayList<>();
+    private static ArrayList<Customer> customers = new ArrayList<>();
+    private static ArrayList<Order> orders = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        // Step 1: Welcome Message
-        System.out.println("=== Clothing Store Management System ===");
-        System.out.println();
 
-        // Step 2: Create Objects
-        // Create ClothingItem objects - FIXED: Correct parameter types
-        ClothingItem item1 = new ClothingItem("Leather Jacket", 25000.0, "Outerwear", true);
-        ClothingItem item2 = new ClothingItem("T-Shirt", 4500.0, "Casual", true);
-        ClothingItem item3 = new ClothingItem(); // Default constructor
+        boolean running = true;
 
-        // Create Order objects - FIXED: Correct parameter types
-        Order order1 = new Order(1001, "Alice Johnson", 29500.0, "Pending");
-        Order order2 = new Order(1002, "Bob Smith", 4500.0, "Pending");
+        while (running) {
+            displayMenu();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        // Create Customer objects - FIXED: Correct parameter types
-        Customer customer1 = new Customer(5001, "Alice Johnson", "+77011234567", 50);
-        Customer customer2 = new Customer(5002, "Bob Smith", "+77012345678", 150);
+            switch (choice) {
+                case 1: addMenuItem(); break;
+                case 2: viewAllMenuItems(); break;
+                case 3: addCustomer(); break;
+                case 4: viewAllCustomers(); break;
+                case 5: addOrder(); break;
+                case 6: viewAllOrders(); break;
+                case 0: running = false; break;
+                default: System.out.println("Invalid option!");
+            }
 
-        // Step 3: Display All Objects
-        System.out.println("--- CLOTHING ITEMS ---");
-        System.out.println(item1);
-        System.out.println(item2);
-        System.out.println(item3);
-        System.out.println();
+            if (running) {
+                System.out.println("\nPress Enter...");
+                scanner.nextLine();
+            }
+        }
 
-        System.out.println("--- ORDERS ---");
-        System.out.println(order1);
-        System.out.println(order2);
-        System.out.println();
+        scanner.close();
+    }
 
-        System.out.println("--- CUSTOMERS ---");
-        System.out.println(customer1);
-        System.out.println(customer2);
-        System.out.println();
+    // ================= METHODS START HERE =================
 
-        // Step 4: Test Getters
-        System.out.println("--- TESTING GETTERS ---");
-        System.out.println("Item 1 name: " + item1.getName());
-        System.out.println("Item 1 price: " + item1.getPrice() + " KZT");
-        System.out.println("Order 1 status: " + order1.getStatus());
-        System.out.println("Customer 1 points: " + customer1.getLoyaltyPoints());
-        System.out.println();
+    private static void displayMenu() {
+        System.out.println("===== STORE MENU =====");
+        System.out.println("1. Add Menu Item");
+        System.out.println("2. View All Menu Items");
+        System.out.println("3. Add Customer");
+        System.out.println("4. View All Customers");
+        System.out.println("5. Add Order");
+        System.out.println("6. View All Orders");
+        System.out.println("0. Exit");
+        System.out.print("Choose option: ");
+    }
 
-        // Step 5: Test Setters
-        System.out.println("--- TESTING SETTERS ---");
-        System.out.println("Updating item3...");
-        item3.setName("Jeans");
-        item3.setPrice(12000.0);
-        item3.setCategory("Bottomwear");
-        item3.setInStock(true);
-        System.out.println("Updated: " + item3);
-        System.out.println();
+    private static void addMenuItem() {
+        System.out.print("Enter item name: ");
+        String name = scanner.nextLine();
 
-        System.out.println("Changing order2 customer...");
-        order2.setCustomerName("Peter Parker");
-        System.out.println("Updated: " + order2);
-        System.out.println();
+        System.out.print("Enter price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine();
 
-        // Step 6: Test Additional Methods
-        // Test ClothingItem methods
-        System.out.println("--- TESTING CLOTHINGITEM METHODS ---");
-        System.out.println(item1.getName() + " is premium: " + item1.isPremium());
-        System.out.println("Applying 20% discount to " + item1.getName());
-        item1.applyDiscount(20);
-        System.out.println("New price: " + item1.getPrice() + " KZT");
-        System.out.println();
+        menuItems.add(new MenuItem());
+        System.out.println("Menu item added!");
+    }
 
-        // Test Order methods
-        System.out.println("--- TESTING ORDER METHODS ---");
-        System.out.println("Order " + order1.getOrderId() + " pending: " + order1.isPending());
-        order1.completeOrder();
-        System.out.println("Order " + order1.getOrderId() + " status: " + order1.getStatus());
-        System.out.println();
+    private static void viewAllMenuItems() {
+        if (menuItems.isEmpty()) {
+            System.out.println("No menu items.");
+            return;
+        }
 
-        System.out.println("Adding to order " + order2.getOrderId());
-        order2.addAmount(1500.0);
-        order2.addAmount(2000.0);
-        System.out.println("Order " + order2.getOrderId() + " total: " + order2.getTotalAmount() + " KZT");
-        System.out.println();
+        for (MenuItem item : menuItems) {
+            System.out.println(item);
+        }
+    }
 
-        // Test Customer methods
-        System.out.println("--- TESTING CUSTOMER METHODS ---");
-        System.out.println(customer1.getName() + " is VIP: " + customer1.isVIP());
-        System.out.println(customer2.getName() + " is VIP: " + customer2.isVIP());
-        System.out.println();
+    private static void addCustomer() {
+        System.out.print("Enter customer ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.println("Adding 60 points to " + customer1.getName());
-        customer1.addLoyaltyPoints(60);
-        System.out.println(customer1.getName() + " points: " + customer1.getLoyaltyPoints());
-        System.out.println(customer1.getName() + " is VIP: " + customer1.isVIP());
-        System.out.println();
+        System.out.print("Enter customer name: ");
+        String name = scanner.nextLine();
 
-        // Step 7: Final Summary
-        System.out.println("--- FINAL STATE ---");
-        System.out.println("Clothing Items:");
-        System.out.println(item1);
-        System.out.println(item2);
-        System.out.println(item3);
-        System.out.println();
+        System.out.print("Enter phone number: ");
+        String phone = scanner.nextLine();
 
-        System.out.println("Orders:");
-        System.out.println(order1);
-        System.out.println(order2);
-        System.out.println();
+        System.out.print("Enter loyalty points: ");
+        int points = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.println("Customers:");
-        System.out.println(customer1);
-        System.out.println(customer2);
+        customers.add(new Customer(id, name, phone, points));
+        System.out.println("Customer added!");
+    }
 
-        System.out.println("\n=== Program Complete ===");
+    private static void viewAllCustomers() {
+        if (customers.isEmpty()) {
+            System.out.println("No customers found.");
+            return;
+        }
+
+        for (Customer c : customers) {
+            System.out.println(c);
+        }
+    }
+
+    private static void addOrder() {
+        System.out.print("Enter order ID: ");
+        int orderId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+
+        System.out.print("Enter total amount: ");
+        double totalAmount = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.print("Enter status: ");
+        String status = scanner.nextLine();
+
+        orders.add(new Order(orderId, customerName, totalAmount, status));
+        System.out.println("Order added!");
+    }
+
+    private static void viewAllOrders() {
+        if (orders.isEmpty()) {
+            System.out.println("No orders found.");
+            return;
+        }
+
+        for (Order o : orders) {
+            System.out.println(o);
+        }
     }
 }
