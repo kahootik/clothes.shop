@@ -1,9 +1,9 @@
 public class ClothingItem {
-    // Fields
-    private String name;
-    private double price;
-    private String category;
-    private boolean inStock;
+    // Protected fields for inheritance
+    protected String name;
+    protected double price;
+    protected String category;
+    protected boolean inStock;
 
     // Constructor with 4 parameters
     public ClothingItem(String name, double price, String category, boolean inStock) {
@@ -51,6 +51,7 @@ public class ClothingItem {
             this.price = 0;
         }
     }
+
     public void setCategory(String category) {
         this.category = category;
     }
@@ -59,21 +60,32 @@ public class ClothingItem {
         this.inStock = inStock;
     }
 
-    // Methods
+    // Methods for inheritance and polymorphism
+    public String getItemType() {
+        return "Generic Clothing Item";
+    }
+
+    public void displayDetails() {
+        System.out.println(getItemType() + ": " + name + " - $" + price);
+    }
+
     public void applyDiscount(double percentage) {
         if (percentage > 0 && percentage <= 100) {
-            this.price = this.price * (1 - percentage / 100);
+            double discount = price * (percentage / 100);
+            price -= discount;
+            System.out.println("Applied " + percentage + "% discount to " + name + ". New price: $" + price);
         } else {
-            System.out.println("Invalid discount!");
+            System.out.println("Invalid discount percentage!");
         }
     }
+
     public boolean isPremium() {
         return price > 10000;
     }
 
     @Override
     public String toString() {
-        return "ClothingItem{name='" + name + "', price=" + price +
-                ", category='" + category + "', inStock=" + inStock + "}";
+        return "[" + getItemType() + "] " + name + " - $" + price +
+                " | Category: " + category + " | In Stock: " + inStock;
     }
 }
