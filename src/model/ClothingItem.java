@@ -16,7 +16,7 @@ public abstract class ClothingItem implements Discountable {
         this.inStock = inStock;
     }
 
-    // ABSTRACT METHOD (REQUIRED)
+    // ABSTRACT METHOD
     public abstract String getItemType();
 
     public abstract void displayDetails();
